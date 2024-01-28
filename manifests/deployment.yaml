@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: drupalhosting
+  labels:
+    app: web
+    env: dev
+spec:
+  selector:
+    matchLabels:
+      app: web
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: web
+        env: dev
+    spec:
+      ini
+      containers:
+        - name: nginx
+          image: wodby/nginx
+          ports:
+            - containerPort : 80
+          volumeMounts:
+            - name: code
+              mountPath: /var/www/html
+        - name: php
+          image: wodby/drupal-php
+          volumeMounts:
+            - name: code
+              mountPath: /var/www/html
+      volumes:
+        - name: code
+          emptyDir: {}
