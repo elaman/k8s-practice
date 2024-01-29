@@ -1,36 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
-  namespace: drupalhosting
+  name: drpler
   labels:
-    app: web
-    env: dev
+    app: drpler
 spec:
   selector:
     matchLabels:
-      app: web
+      app: drpler
   replicas: 1
   template:
     metadata:
       labels:
-        app: web
-        env: dev
+        app: drpler
     spec:
-      ini
       containers:
         - name: nginx
           image: wodby/nginx
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
           ports:
-            - containerPort : 80
-          volumeMounts:
-            - name: code
-              mountPath: /var/www/html
-        - name: php
-          image: wodby/drupal-php
+            - containerPort: 80
+              name: nginx
           volumeMounts:
             - name: code
               mountPath: /var/www/html
       volumes:
         - name: code
-          emptyDir: {}
