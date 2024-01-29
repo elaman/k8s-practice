@@ -14,9 +14,27 @@ spec:
       labels:
         app: drpler
     spec:
+      initContainers:
+        - name: code
+          image: wodby/drupal-php
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          volumeMounts:
+            - name: code
+              mountPath: /var/www/html
+          command:
+            - composer
+            - create-project
+            - drupal/recommended-project
+            - .
       containers:
         - name: php
-          image: wodby/php
+          image: wodby/drupal-php
           resources:
             requests:
               cpu: 100m
@@ -38,9 +56,11 @@ spec:
               memory: 100Mi
           env:
             - name: NGINX_VHOST_PRESET
-              value: "php"
+              value: "drupal10"
             - name: NGINX_BACKEND_HOST
               value: "localhost"
+            - name: NGINX_SERVER_ROOT
+              value: "/var/www/html/web"
           ports:
             - containerPort: 80
               name: nginx
