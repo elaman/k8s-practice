@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: drpler
+  name: drpler-deployment
   labels:
     app: drpler
 spec:
@@ -45,6 +45,9 @@ spec:
           volumeMounts:
             - name: code
               mountPath: /var/www/html
+            - name: pvc
+              mountPath: /var/www/html/web/sites/default/files
+              subPath: public
         - name: nginx
           image: wodby/nginx
           resources:
@@ -67,5 +70,11 @@ spec:
           volumeMounts:
             - name: code
               mountPath: /var/www/html
+            - name: pvc
+              mountPath: /var/www/html/web/sites/default/files
+              subPath: public
       volumes:
         - name: code
+        - name: pvc
+          persistentVolumeClaim:
+            claimName: drpler-pvc
