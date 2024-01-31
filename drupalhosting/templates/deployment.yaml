@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: drpler-deployment
+  name: {{ .Values.branchName }}-{{ .Values.appName }}
   labels:
-    app: drpler
+    app: {{ .Values.branchName }}-{{ .Values.appName }}
 spec:
   selector:
     matchLabels:
-      app: drpler
+      app: {{ .Values.branchName }}-{{ .Values.appName }}
   replicas: 1
   template:
     metadata:
       labels:
-        app: drpler
+        app: {{ .Values.branchName }}-{{ .Values.appName }}
     spec:
       initContainers:
         - name: code
@@ -77,4 +77,4 @@ spec:
         - name: code
         - name: pvc
           persistentVolumeClaim:
-            claimName: drpler-pvc
+            claimName: {{ .Values.branchName }}-{{ .Values.appName }}-pvc
